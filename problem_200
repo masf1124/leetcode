@@ -1,0 +1,52 @@
+解题思路：
+//TO-DO
+
+
+
+
+
+
+
+
+
+
+class Solution {
+    
+    private int[][] directions = {{1, -1, 0, 0},{0, 0, 1, -1}}; //当前坐标加上directions[0][i],directions[1][i]表示当前坐标的上下左右坐标
+    
+    public int dfs(char[][] grid,boolean[][] visited,int x,int y){
+        if(x < 0 || x >= grid.length || y < 0 || y >= grid[0].length){ //坐标x,y不能越界
+            return 0;
+        }
+        
+        visited[x][y] = true;
+        for(int i = 0;i < 4;i++){
+            int newx = x + directions[0][i];
+            int newy = y + directions[1][i];
+            if(newx >= 0 && newx < grid.length && newy >= 0 && newy < grid[0].length 
+               && visited[newx][newy] == false && grid[newx][newy] == '1'){
+                visited[newx][newy] = true;
+                dfs(grid,visited,newx,newy);
+            }
+        }
+        return 1;
+    }
+    
+    public int numIslands(char[][] grid) {
+        if(grid == null || grid.length == 0){//先判断输入参数的合法性
+            return 0;
+        }
+        
+        int ans = 0;
+        boolean[][] visited = new boolean[grid.length][grid[0].length];//记录被访问过的每个点
+        for(int i = 0;i < grid.length;i++){
+            for(int j = 0;j < grid[0].length;j++){
+                //调用一次dfs就搜索完一个区域
+                if(grid[i][j] == '1' && visited[i][j] == false)
+                    ans += dfs(grid,visited,i,j);
+            }
+        }
+        return ans;
+    }
+    
+}
